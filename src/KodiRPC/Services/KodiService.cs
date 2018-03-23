@@ -10,8 +10,11 @@
  * http://www.gnu.org/licenses/.
  */
 
+using System.Collections.Generic;
 using System.Configuration;
 using KodiRPC.Responses.Files;
+using KodiRPC.Responses.Playlist;
+using KodiRPC.Responses.Types.Player;
 using KodiRPC.Responses.VideoLibrary;
 using KodiRPC.RPC.Connector;
 using KodiRPC.RPC.RequestResponse;
@@ -125,5 +128,13 @@ namespace KodiRPC.Services
             return _rpcConnector.MakeRequest<PrepareDownloadResponse>(KodiMethods.PrepareDownload, parameters, requestId);
         }
         #endregion
+
+        #region Playlist
+
+        public JsonRpcResponse<List<Playlist>> GetPlaylists(string requestId = "GetPlaylists")
+        {
+            return _rpcConnector.MakeRequest<List<Playlist>>(KodiMethods.GetPlaylists, new object(), requestId);
+        }
+#endregion
     }
 }

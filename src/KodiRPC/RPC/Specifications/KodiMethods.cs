@@ -47,5 +47,11 @@ namespace KodiRPC.RPC.Specifications
         public const string PrepareDownload = "Files.PrepareDownload";
         #endregion
 
+        #region Playlists
+
+        public const string GetPlaylists = "Playlist.GetPlaylists";
+
+        #endregion
+
     }
 }

@@ -27,6 +27,7 @@ namespace DemoClient
         {
             try
             {
+                
                 Console.WriteLine("Connecting to Kodi JSON-RPC API/{0}.", Service.ApiVersion);
                 Console.WriteLine("\tHost...........{0}:{1}", Service.Host, Service.Port);
                 Console.WriteLine("\tUsername.......{0}", Service.Username);
@@ -37,97 +38,99 @@ namespace DemoClient
                 var ping = Service.Ping();
                 Console.WriteLine(ping.Result);
 
-                var parameters = new GetTvShowDetailsParams
-                {
-                    TvShowId = 1,
-                    //Properties = new[] {TvShowProperties.Title, TvShowProperties.Premiered, TvShowProperties.Year}
-                    Properties = TvShowProperties.All()
-                };
+                var x = Service.GetPlaylists();
 
-                Console.WriteLine();
-                Console.WriteLine("Running VideoLibrary.GetTvShowDetails");
+                //    var parameters = new GetTvShowDetailsParams
+                //    {
+                //        TvShowId = 1,
+                //        //Properties = new[] {TvShowProperties.Title, TvShowProperties.Premiered, TvShowProperties.Year}
+                //        Properties = TvShowProperties.All()
+                //    };
 
-                var details = Service.GetTvShowDetails(parameters);
+                //    Console.WriteLine();
+                //    Console.WriteLine("Running VideoLibrary.GetTvShowDetails");
 
-                Console.WriteLine("ID.................{0}", details.Id);
-                Console.WriteLine("JsonRPC............{0}", details.JsonRpc);
-                Console.WriteLine("ShowTitle..........{0}", details.Result.TvShowDetails.Title);
-                Console.WriteLine("Studio.............{0}", details.Result.TvShowDetails.Premiered);
-                Console.WriteLine("Premiered..........{0}", details.Result.TvShowDetails.Year);
-                Console.WriteLine("Fanart.............{0}", details.Result.TvShowDetails.Fanart);
-                Console.WriteLine("File...............{0}", details.Result.TvShowDetails.File);
-                Console.WriteLine();
+                //    var details = Service.GetTvShowDetails(parameters);
 
-                Console.WriteLine();
-                Console.Write("Scanning for new content...");
-                var scan = Service.Scan(new ScanParams());
-                Console.WriteLine(scan.Result);
+                //    Console.WriteLine("ID.................{0}", details.Id);
+                //    Console.WriteLine("JsonRPC............{0}", details.JsonRpc);
+                //    Console.WriteLine("ShowTitle..........{0}", details.Result.TvShowDetails.Title);
+                //    Console.WriteLine("Studio.............{0}", details.Result.TvShowDetails.Premiered);
+                //    Console.WriteLine("Premiered..........{0}", details.Result.TvShowDetails.Year);
+                //    Console.WriteLine("Fanart.............{0}", details.Result.TvShowDetails.Fanart);
+                //    Console.WriteLine("File...............{0}", details.Result.TvShowDetails.File);
+                //    Console.WriteLine();
 
-                Console.WriteLine();
-                Console.Write("Cleaning...");
-                var clean = Service.Clean(new CleanParams());
-                Console.WriteLine(clean.Result);
+                //    Console.WriteLine();
+                //    Console.Write("Scanning for new content...");
+                //    var scan = Service.Scan(new ScanParams());
+                //    Console.WriteLine(scan.Result);
 
-                Console.WriteLine();
-                Console.WriteLine("Getting File details");
+                //    Console.WriteLine();
+                //    Console.Write("Cleaning...");
+                //    var clean = Service.Clean(new CleanParams());
+                //    Console.WriteLine(clean.Result);
 
-                var fileDetailParams = new GetFileDetailsParams
-                {
-                    File = "/media/gotham/series/Dark Matter/Season 02/Dark Matter - S02E03 - I’ve Seen the Other Side of You.mkv",
-                    Properties = FileProperties.All()
-                };
+                //    Console.WriteLine();
+                //    Console.WriteLine("Getting File details");
 
-                Console.WriteLine();
-                var fileDetails = Service.GetFileDetails(fileDetailParams);
+                //    var fileDetailParams = new GetFileDetailsParams
+                //    {
+                //        File = "/media/gotham/series/Dark Matter/Season 02/Dark Matter - S02E03 - I’ve Seen the Other Side of You.mkv",
+                //        Properties = FileProperties.All()
+                //    };
 
-                Console.WriteLine("File..............{0}", fileDetails.Result.FileDetails.FilePath);
-                Console.WriteLine("FileName..........{0}", fileDetails.Result.FileDetails.Label);
-                Console.WriteLine("MimeType..........{0}", fileDetails.Result.FileDetails.MimeType);
-                Console.WriteLine("Size..............{0}", fileDetails.Result.FileDetails.Size);
+                //    Console.WriteLine();
+                //    var fileDetails = Service.GetFileDetails(fileDetailParams);
 
-                Console.WriteLine();
-                Console.WriteLine("Preparing file for download");
-                var prepareDownloadParam = new PrepareDownloadParams
-                {
-                    Path = details.Result.TvShowDetails.Fanart
-                    //Path = fileDetails.Result.FileDetails.FilePath
-                };
-                var prepareDownload = Service.PrepareDownload(prepareDownloadParam);
-                Console.WriteLine("Details...........{0}", prepareDownload.Result.Details.Path);
-                Console.WriteLine("Protocol..........{0}", prepareDownload.Result.Protocol);
-                Console.WriteLine("Mode..............{0}", prepareDownload.Result.Mode);
+                //    Console.WriteLine("File..............{0}", fileDetails.Result.FileDetails.FilePath);
+                //    Console.WriteLine("FileName..........{0}", fileDetails.Result.FileDetails.Label);
+                //    Console.WriteLine("MimeType..........{0}", fileDetails.Result.FileDetails.MimeType);
+                //    Console.WriteLine("Size..............{0}", fileDetails.Result.FileDetails.Size);
 
-                Console.WriteLine();
-                Console.WriteLine("Getting directory (directory)");
-                var getDirectoryParams = new GetDirectoryParams
-                {
-                    Directory = "/media/gotham/series/Dark Matter",
-                    Properties = FileProperties.All()
-                };
-                var getDirectory = Service.GetDirectory(getDirectoryParams);
-                foreach (var file in getDirectory.Result.Files)
-                {
-                    Console.WriteLine("....{0}", file.Label);
-                    Console.WriteLine("........Path..............{0}", file.FilePath);
-                    Console.WriteLine("........Type..............{0}", file.FileType);
-                }
+                //    Console.WriteLine();
+                //    Console.WriteLine("Preparing file for download");
+                //    var prepareDownloadParam = new PrepareDownloadParams
+                //    {
+                //        Path = details.Result.TvShowDetails.Fanart
+                //        //Path = fileDetails.Result.FileDetails.FilePath
+                //    };
+                //    var prepareDownload = Service.PrepareDownload(prepareDownloadParam);
+                //    Console.WriteLine("Details...........{0}", prepareDownload.Result.Details.Path);
+                //    Console.WriteLine("Protocol..........{0}", prepareDownload.Result.Protocol);
+                //    Console.WriteLine("Mode..............{0}", prepareDownload.Result.Mode);
 
-                Console.WriteLine();
-                Console.WriteLine("Getting directory (files)");
-                getDirectoryParams.Directory += "/Season 01/";
-                getDirectoryParams.Properties = FileProperties.All();
-                getDirectory = Service.GetDirectory(getDirectoryParams);
+                //    Console.WriteLine();
+                //    Console.WriteLine("Getting directory (directory)");
+                //    var getDirectoryParams = new GetDirectoryParams
+                //    {
+                //        Directory = "/media/gotham/series/Dark Matter",
+                //        Properties = FileProperties.All()
+                //    };
+                //    var getDirectory = Service.GetDirectory(getDirectoryParams);
+                //    foreach (var file in getDirectory.Result.Files)
+                //    {
+                //        Console.WriteLine("....{0}", file.Label);
+                //        Console.WriteLine("........Path..............{0}", file.FilePath);
+                //        Console.WriteLine("........Type..............{0}", file.FileType);
+                //    }
 
-                var x = FileProperties.All().Aggregate("", (current, y) => current + (@",""" + y + @""""));
+                //    Console.WriteLine();
+                //    Console.WriteLine("Getting directory (files)");
+                //    getDirectoryParams.Directory += "/Season 01/";
+                //    getDirectoryParams.Properties = FileProperties.All();
+                //    getDirectory = Service.GetDirectory(getDirectoryParams);
 
-                foreach (var file in getDirectory.Result.Files)
-                {
-                    Console.WriteLine("....{0}", file.Label);
-                    Console.WriteLine("........Path..............{0}", file.FilePath);
-                    Console.WriteLine("........Type..............{0}", file.FileType);
-                }
+                //    var x = FileProperties.All().Aggregate("", (current, y) => current + (@",""" + y + @""""));
 
-                PressAnyKey();
+                //    foreach (var file in getDirectory.Result.Files)
+                //    {
+                //        Console.WriteLine("....{0}", file.Label);
+                //        Console.WriteLine("........Path..............{0}", file.FilePath);
+                //        Console.WriteLine("........Type..............{0}", file.FileType);
+                //    }
+
+                //    PressAnyKey();
             }
             catch (Exception e)
             {
