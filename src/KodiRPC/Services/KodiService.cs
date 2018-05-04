@@ -1,26 +1,28 @@
 ﻿/********************************************************************************************************************************************
  * Copyright (C) 2016 Pieter-Uys Fourie
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as 
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License, or any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program. If not, see 
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
  * http://www.gnu.org/licenses/.
  */
 
 using System.Collections.Generic;
 using System.Configuration;
 using KodiRPC.Responses.Files;
-using KodiRPC.Responses.Playlist;
+using KodiRPC.Responses.Player;
 using KodiRPC.Responses.Types.Player;
 using KodiRPC.Responses.VideoLibrary;
 using KodiRPC.RPC.Connector;
 using KodiRPC.RPC.RequestResponse;
 using KodiRPC.RPC.RequestResponse.Params.Files;
+using KodiRPC.RPC.RequestResponse.Params.Player;
 using KodiRPC.RPC.RequestResponse.Params.VideoLibrary;
 using KodiRPC.RPC.Specifications;
+using KodiRPC.RPC.Specifications.Properties;
 
 namespace KodiRPC.Services
 {
@@ -28,28 +30,42 @@ namespace KodiRPC.Services
     {
         private readonly RpcConnector _rpcConnector;
         public readonly string ApiVersion = "v6";
-        public readonly string Host = ConfigurationManager.AppSettings["KodiHost"];
-        public readonly string Port = ConfigurationManager.AppSettings["KodiPort"];
-        public readonly string Username = ConfigurationManager.AppSettings["KodiUsername"];
-        public readonly string Password = ConfigurationManager.AppSettings["KodiPassword"];
+        public readonly string Host;
+        public readonly string Port;
+        public readonly string Username;
+        public readonly string Password;
 
         public KodiService()
         {
             _rpcConnector = new RpcConnector(this);
+            Host = ConfigurationManager.AppSettings["KodiHost"];
+            Port = ConfigurationManager.AppSettings["KodiPort"];
+            Username = ConfigurationManager.AppSettings["KodiUsername"];
+            Password = ConfigurationManager.AppSettings["KodiPassword"];
+        }
+
+        public KodiService(string host, string port, string username, string password)
+        {
+            _rpcConnector = new RpcConnector(this);
+            Host = host;
+            Port = port;
+            Username = username;
+            Password = password;
         }
 
         #region JSONRPC
 
         public JsonRpcResponse<string> Ping()
         {
-            return _rpcConnector.MakeRequest<string>(KodiMethods.Ping, new object(), timeout:2000);
+            return _rpcConnector.MakeRequest<string>(KodiMethods.Ping, new object(), timeout: 2000);
         }
 
-        #endregion
+        #endregion JSONRPC
 
         #region VideoLibrary
 
         #region Shows
+
         public JsonRpcResponse<string> Clean(CleanParams parameters, string requestId = "VideoLibrary.Clean")
         {
             return _rpcConnector.MakeRequest<string>(KodiMethods.Clean, parameters, requestId);
@@ -65,7 +81,7 @@ namespace KodiRPC.Services
             return _rpcConnector.MakeRequest<GetTvShowsResponse>(KodiMethods.GetTvShows, parameters, requestId);
         }
 
-        public JsonRpcResponse<GetTvShowDetailsResponse> GetTvShowDetails(GetTvShowDetailsParams parameters, string requestId="GetTvShowDetailsResponse")
+        public JsonRpcResponse<GetTvShowDetailsResponse> GetTvShowDetails(GetTvShowDetailsParams parameters, string requestId = "GetTvShowDetailsResponse")
         {
             return _rpcConnector.MakeRequest<GetTvShowDetailsResponse>(KodiMethods.GetTvShowDetails, parameters, requestId);
         }
@@ -80,7 +96,7 @@ namespace KodiRPC.Services
             return _rpcConnector.MakeRequest<GetEpisodesResponse>(KodiMethods.GetEpisodes, parameters, requestId);
         }
 
-        public JsonRpcResponse<GetEpisodeDetailsResponse> GetEpisodeDetails(GetEpisodeDetailsParams parameters, string requestId="GetTvShowDetailsResponse")
+        public JsonRpcResponse<GetEpisodeDetailsResponse> GetEpisodeDetails(GetEpisodeDetailsParams parameters, string requestId = "GetTvShowDetailsResponse")
         {
             return _rpcConnector.MakeRequest<GetEpisodeDetailsResponse>(KodiMethods.GetEpisodeDetails, parameters, requestId);
         }
@@ -90,15 +106,17 @@ namespace KodiRPC.Services
         {
             return _rpcConnector.MakeRequest<GetRecentlyAddedEpisodesResponse>(KodiMethods.GetRecentlyAddedEpisodes, parameters, requestId);
         }
-        #endregion
+
+        #endregion Shows
 
         #region Movies
+
         public JsonRpcResponse<GetMoviesResponse> GetMovies(GetMoviesParams parameters, string requestId = "GetMoviesResponse")
         {
             return _rpcConnector.MakeRequest<GetMoviesResponse>(KodiMethods.GetMovies, parameters, requestId);
         }
 
-        public JsonRpcResponse<GetMovieDetailsResponse> GetMovieDetails(GetMovieDetailsParams parameters, string requestId="GetMovieDetailsResponse")
+        public JsonRpcResponse<GetMovieDetailsResponse> GetMovieDetails(GetMovieDetailsParams parameters, string requestId = "GetMovieDetailsResponse")
         {
             return _rpcConnector.MakeRequest<GetMovieDetailsResponse>(KodiMethods.GetMovieDetails, parameters, requestId);
         }
@@ -108,11 +126,13 @@ namespace KodiRPC.Services
         {
             return _rpcConnector.MakeRequest<GetRecentlyAddedMoviesResponse>(KodiMethods.GetRecentlyAddedMovies, parameters, requestId);
         }
-        #endregion
 
-        #endregion
+        #endregion Movies
+
+        #endregion VideoLibrary
 
         #region Files
+
         public JsonRpcResponse<GetFileDetailsResponse> GetFileDetails(GetFileDetailsParams parameters, string requestId = "GetFileDetails")
         {
             return _rpcConnector.MakeRequest<GetFileDetailsResponse>(KodiMethods.GetFileDetails, parameters, requestId);
@@ -127,7 +147,8 @@ namespace KodiRPC.Services
         {
             return _rpcConnector.MakeRequest<PrepareDownloadResponse>(KodiMethods.PrepareDownload, parameters, requestId);
         }
-        #endregion
+
+        #endregion Files
 
         #region Playlist
 
@@ -135,6 +156,38 @@ namespace KodiRPC.Services
         {
             return _rpcConnector.MakeRequest<List<Playlist>>(KodiMethods.GetPlaylists, new object(), requestId);
         }
-#endregion
+
+        #endregion Playlist
+
+        #region Player
+
+        public JsonRpcResponse<PlayPauseResponse> PlayPause(int playerId = 1, string requestId = "PlayPause")
+        {
+            return _rpcConnector.MakeRequest<PlayPauseResponse>(KodiMethods.PlayPause,
+                new PlayPauseParams { PlayerId = playerId }, requestId);
+        }
+
+        public JsonRpcResponse<GetItemResponse> PlayerGetItem(int playerId = 1, string[] props = null, string requestId = "PlayerGetItem")
+        {
+            return _rpcConnector.MakeRequest<GetItemResponse>(KodiMethods.PlayerGetItem, new GetItemParams { PlayerId = playerId, Properties = props ?? new string[0] }, requestId);
+        }
+
+        public JsonRpcResponse<PlayerProperty> PlayerGetProperty(int playerId = 1, string[] props = null,
+            string requestId = "PlayerGetProperty")
+        {
+            return _rpcConnector.MakeRequest<PlayerProperty>(KodiMethods.PlayerGetProperties,
+                new GetPropertyParams { PlayerId = playerId, Properties = props ?? PlayerProperties.All() });
+        }
+
+        #endregion Player
+
+        #region System
+
+        public JsonRpcResponse<string> Reboot(string requestId = "Reboot")
+        {
+            return _rpcConnector.MakeRequest<string>(KodiMethods.Reboot, new object(), requestId);
+        }
+
+        #endregion System
     }
 }

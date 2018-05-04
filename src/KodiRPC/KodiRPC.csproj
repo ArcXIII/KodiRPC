@@ -11,6 +11,8 @@
     <AssemblyName>KodiRPC</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -72,6 +74,9 @@
     <OutputPath>bin\Local-Debug\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Costura, Version=2.0.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
+      <HintPath>..\..\..\PlayerRemoteControl\packages\Costura.Fody.2.0.0\lib\net452\Costura.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -96,9 +101,16 @@
     <Compile Include="Responses\Files\GetFileDetailsResponse.cs" />
     <Compile Include="Responses\Files\PrepareDownloadResponse.cs" />
     <Compile Include="Responses\Files\Details.cs" />
+    <Compile Include="Responses\Player\GetItemResponse.cs" />
+    <Compile Include="Responses\Player\PlayPauseResponse.cs" />
     <Compile Include="Responses\Playlist\GetPlaylistsResponse.cs" />
+    <Compile Include="Responses\Types\Global\Time.cs" />
     <Compile Include="Responses\Types\List\Item\Base.cs" />
+    <Compile Include="Responses\Types\Player\PlayerAudioStream.cs" />
+    <Compile Include="Responses\Types\Player\PlayerProperty.cs" />
+    <Compile Include="Responses\Types\Player\PlayerVideoStream.cs" />
     <Compile Include="Responses\Types\Player\Playlist.cs" />
+    <Compile Include="Responses\Types\Player\Subtitle.cs" />
     <Compile Include="RPC\RequestResponse\Params\Files\Media.cs" />
     <Compile Include="Responses\Types\List\Item\File.cs" />
     <Compile Include="Responses\Types\List\LimitsReturned.cs" />
@@ -146,6 +158,9 @@
     <Compile Include="RPC\RequestResponse\Params\Filter.cs" />
     <Compile Include="RPC\RequestResponse\Params\Filters\Operators.cs" />
     <Compile Include="RPC\RequestResponse\Params\Limits.cs" />
+    <Compile Include="RPC\RequestResponse\Params\Player\GetItemParams.cs" />
+    <Compile Include="RPC\RequestResponse\Params\Player\GetPropertyParams.cs" />
+    <Compile Include="RPC\RequestResponse\Params\Player\PlayPauseParams.cs" />
     <Compile Include="RPC\RequestResponse\Params\Properties.cs" />
     <Compile Include="RPC\RequestResponse\Params\Sort.cs" />
     <Compile Include="RPC\RequestResponse\Params\Sorting\SortMethods.cs" />
@@ -165,6 +180,7 @@
     <Compile Include="RPC\Specifications\Properties\List\Fields\FilesProperties.cs" />
     <Compile Include="RPC\Specifications\Properties\List\Item\Base.cs" />
     <Compile Include="RPC\Specifications\Properties\MovieProperties.cs" />
+    <Compile Include="RPC\Specifications\Properties\PlayerProperties.cs" />
     <Compile Include="RPC\Specifications\Properties\SeasonProperties.cs" />
     <Compile Include="RPC\Specifications\Properties\FileProperties.cs" />
     <Compile Include="RPC\Specifications\Properties\TvShowProperties.cs" />
@@ -189,6 +205,15 @@
     <Folder Include="Responses\Types\List\Fields\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\..\..\PlayerRemoteControl\packages\Fody.3.0.0\build\Fody.targets" Condition="Exists('..\..\..\PlayerRemoteControl\packages\Fody.3.0.0\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\..\PlayerRemoteControl\packages\Fody.3.0.0\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\PlayerRemoteControl\packages\Fody.3.0.0\build\Fody.targets'))" />
+    <Error Condition="!Exists('..\..\..\PlayerRemoteControl\packages\Costura.Fody.2.0.0\build\Costura.Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\..\PlayerRemoteControl\packages\Costura.Fody.2.0.0\build\Costura.Fody.targets'))" />
+  </Target>
+  <Import Project="..\..\..\PlayerRemoteControl\packages\Costura.Fody.2.0.0\build\Costura.Fody.targets" Condition="Exists('..\..\..\PlayerRemoteControl\packages\Costura.Fody.2.0.0\build\Costura.Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

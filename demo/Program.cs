@@ -1,17 +1,18 @@
 ﻿/********************************************************************************************************************************************
  * Copyright (C) 2016 Pieter-Uys Fourie
- * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as 
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as
  * published by the Free Software Foundation, either version 3 of the License, or any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with this program. If not, see 
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
  * http://www.gnu.org/licenses/.
  */
 
 using System;
 using System.Linq;
+using KodiRPC.RPC.RequestResponse.Params;
 using KodiRPC.RPC.RequestResponse.Params.Files;
 using KodiRPC.RPC.RequestResponse.Params.VideoLibrary;
 using KodiRPC.RPC.Specifications.Properties;
@@ -27,7 +28,6 @@ namespace DemoClient
         {
             try
             {
-                
                 Console.WriteLine("Connecting to Kodi JSON-RPC API/{0}.", Service.ApiVersion);
                 Console.WriteLine("\tHost...........{0}:{1}", Service.Host, Service.Port);
                 Console.WriteLine("\tUsername.......{0}", Service.Username);
@@ -37,6 +37,8 @@ namespace DemoClient
 
                 var ping = Service.Ping();
                 Console.WriteLine(ping.Result);
+
+                var y = Service.GetDirectory(new GetDirectoryParams() { Directory = "F:\\!Media\\Movies" });
 
                 var x = Service.GetPlaylists();
 
