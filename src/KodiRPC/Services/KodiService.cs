@@ -23,6 +23,7 @@ using KodiRPC.RPC.RequestResponse.Params.Player;
 using KodiRPC.RPC.RequestResponse.Params.VideoLibrary;
 using KodiRPC.RPC.Specifications;
 using KodiRPC.RPC.Specifications.Properties;
+using PlayerProperties = KodiRPC.Responses.Types.Player.PlayerProperties;
 
 namespace KodiRPC.Services
 {
@@ -172,11 +173,11 @@ namespace KodiRPC.Services
             return _rpcConnector.MakeRequest<GetItemResponse>(KodiMethods.PlayerGetItem, new GetItemParams { PlayerId = playerId, Properties = props ?? new string[0] }, requestId);
         }
 
-        public JsonRpcResponse<PlayerProperty> PlayerGetProperty(int playerId = 1, string[] props = null,
+        public JsonRpcResponse<PlayerProperties> PlayerGetProperty(int playerId = 1, string[] props = null,
             string requestId = "PlayerGetProperty")
         {
-            return _rpcConnector.MakeRequest<PlayerProperty>(KodiMethods.PlayerGetProperties,
-                new GetPropertyParams { PlayerId = playerId, Properties = props ?? PlayerProperties.All() });
+            return _rpcConnector.MakeRequest<PlayerProperties>(KodiMethods.PlayerGetProperties,
+                new GetPropertyParams { PlayerId = playerId, Properties = props ?? RPC.Specifications.Properties.PlayerProperties.All() });
         }
 
         #endregion Player

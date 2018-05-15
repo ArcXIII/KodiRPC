@@ -20,5 +20,13 @@ namespace KodiRPC.Responses.Types.Global
 
         [JsonProperty(PropertyName = "seconds", NullValueHandling = NullValueHandling.Ignore)]
         public int Seconds { get; set; }
+
+        public override string ToString()
+        {
+            var hlen = Hours.ToString().Length == 1 ? "0" : "";
+            var mlen = Minutes.ToString().Length == 1 ? "0" : "";
+            var slen = Seconds.ToString().Length == 1 ? "0" : "";
+            return $"{hlen}{Hours}:{mlen}{Minutes}:{slen}{Seconds}";
+        }
     }
 }

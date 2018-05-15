@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 namespace KodiRPC.Responses.Types.Player
 {
     // Player properties and response for Player.GetProperties
-    public class PlayerProperty
+    public class PlayerProperties
     {
         [JsonProperty(PropertyName = "type", NullValueHandling = NullValueHandling.Ignore)]
         public string Type { get; set; }

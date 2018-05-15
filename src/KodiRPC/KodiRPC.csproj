@@ -107,7 +107,7 @@
     <Compile Include="Responses\Types\Global\Time.cs" />
     <Compile Include="Responses\Types\List\Item\Base.cs" />
     <Compile Include="Responses\Types\Player\PlayerAudioStream.cs" />
-    <Compile Include="Responses\Types\Player\PlayerProperty.cs" />
+    <Compile Include="Responses\Types\Player\PlayerProperties.cs" />
     <Compile Include="Responses\Types\Player\PlayerVideoStream.cs" />
     <Compile Include="Responses\Types\Player\Playlist.cs" />
     <Compile Include="Responses\Types\Player\Subtitle.cs" />
